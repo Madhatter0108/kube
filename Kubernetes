@@ -139,8 +139,8 @@ metadata:
   server: webserver
 spec:
  containers:
-  name: n1
-  image: nginx
+  - name: n1
+    image: nginx
 :wq!
 
 
