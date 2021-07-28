@@ -256,6 +256,113 @@ kubectl get all
 kubectl describe rs myrs
 
 ================
+Custom command to get image running on pods
+-------------
+kubectl get pods -o=custom=PodName:.metadata.name,Containers:.spec.containers[*].name, Image:.spec.containers[*].image
+
+
+===============
+Service Object: Service object are used for external network connectivity to Pods. i.e Port maping. Service object is always created for running pods.
+
+
+3 types of Service Objects:
+1. NodePort. { Port mapping from host port to Pod port}
+2. LoadBalancer. { Give external ip for communication }
+3. ClusterIP. { Used for communication between Pods }
+
+For Port mapping we need to give 3 ports details: 
+
+1. Nodeport ie. the port of host
+2. Service port ie port for service object created for pods.
+3. Pod port ie the port on pod to access the application.
+
+KIND:     Service
+VERSION:  v1
+DESCRIPTION:
+     Service is a named abstraction of software service (for example, mysql)
+     consisting of local port (for example 3306) that the proxy listens on, and
+     the selector that determines which pods will answer requests sent through
+     the proxy.
+FIELDS:
+   apiVersion   <string>
+     APIVersion defines the versioned schema of this representation of an
+     object. Servers should convert recognized schemas to the latest internal
+     value, and may reject unrecognized values. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+   kind <string>
+     Kind is a string value representing the REST resource this object
+     represents. Servers may infer this from the endpoint the client submits
+     requests to. Cannot be updated. In CamelCase. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+   metadata     <Object>
+     Standard object's metadata. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+   spec <Object>
+     Spec defines the behavior of a service.
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+   status       <Object>
+     Most recently observed status of the service. Populated by the system.
+     Read-only. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+
+==============
+Template:
+==============
+
+vim myservice.yaml
+i
+
+apiVersion: v1
+kind: Service
+metadata:
+spec:
+ type:
+ por
+ ts:
+  - targetPort: ie on the conatiner.
+    port: Service port
+    nodePort: ie on the host { range between 30000 - 32672 }
+ selector:
+  type:
+ i 
+  
+===============
+example : NodePort >> nodeport needed since it will do maping from external environment. NodePort>>ServicePort>>TargetPort. 
+===============
+
+apiVersion: v1
+kind: Service
+metadata:
+ name: myservice
+spec:
+ type: NodePort
+ ports:
+  - targetPort: 80
+    port: 8181
+    nodePort: 30008
+ selector:
+  type: webserver
+  
+===============
+Example: LoadBalancer >> NodePort not needed since external ip will be assigned
+===============
+
+apiVersion: v1
+kind: Service
+metadata:
+ name: LoadbalancerService
+spec:
+ type: LoadBalancer
+ ports:
+  - targetPort: 80
+    node: 8181
+ selector:
+  type: webserver
+  
+ ==================
+ 
+  
+
 
 
 
