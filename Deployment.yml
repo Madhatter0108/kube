@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
- name: Mydeployment
+ name: mydeployment
 spec:
  replicas: 3
  minReadySeconds: 10
@@ -12,12 +12,12 @@ spec:
    maxSurge: 1
  selector:
   matchLabels:
-   type: Kubeservers
+   type: kubeservers
  template:
   metadata:
-   name: Mydeployment
+   name: mydeployment
    labels:
-    type: Kubeservers
+    type: kubeservers
   spec:
    containers:
     - name: Kubertenesserver
@@ -27,7 +27,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
- name: Kubeservice
+ name: kubeservice
 spec:
  type: NodePort
  ports:
@@ -36,5 +36,5 @@ spec:
     nodeport: 30009
  selector:
    matchLabels:
-    type: Kubeservers
+    type: kubeservers
 
