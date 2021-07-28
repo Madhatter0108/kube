@@ -489,8 +489,83 @@ kubectl set image deployment mydeployment c1=leaddevops/kubeserve:v2
  
  to remove all kubectl objects >>> kubectl delete all --all
  
+ ===========
+ DaemonSet >=== used to set deployment of pod to all nodes, incase new node is added pod will be automatically deployed. 
  
+ Replica number not provided in this, 
+ Ex: Used for antivirus on node. 
+ 
+ 
+ KIND:     DaemonSet
+VERSION:  apps/v1
 
+DESCRIPTION:
+     DaemonSet represents the configuration of a daemon set.
+FIELDS:
+   apiVersion   <string>
+     APIVersion defines the versioned schema of this representation of an
+     object. Servers should convert recognized schemas to the latest internal
+     value, and may reject unrecognized values. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+   kind <string>
+     Kind is a string value representing the REST resource this object
+     represents. Servers may infer this from the endpoint the client submits
+     requests to. Cannot be updated. In CamelCase. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+
+   metadata     <Object>
+     Standard object's metadata. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+
+   spec <Object>
+     The desired behavior of this daemon set. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+
+   status       <Object>
+     The current status of this daemon set. This data may be out of date by some
+     window of time. Populated by the system. Read-only. More info:
+:
+ 
+ 
+===
+Template
+===
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+spec:
+ selector:
+  matchLabels:
+ template:
+  metadata:
+   labels:
+  spec:
+  
+ =============
+Example:
+--------
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+ name: mydaemonset
+spec:
+ selector:
+  matchLabels:
+   type: daemonset
+ template:
+  metadata:
+   name: mypods
+   labels:
+    author: mohit
+    type: daemonset
+  spec:
+   containers:
+    - name: d
+      image: nginx
+   
 
 
 
