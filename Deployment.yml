@@ -1,1 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: MyDeployment
+spec:
+ replicas: 3
+ strategy:
+  type: RollingUpdate
+  rollingUpdate:
+   maxUnavailable: 1
+   maxSurge: 1
+ selector:
+  matchLabels:
+   type: Kubeservers
+ template:
+  metadata:
+   name: Mydeployment
+   labels:
+    type: Kubeservers
+  spec:
+   containers:
+    - name: Kubertenesserver
+      image: leaddevops/kubeserve:v1
 
