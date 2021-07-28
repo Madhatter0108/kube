@@ -359,9 +359,101 @@ spec:
  selector:
   type: webserver
   
- ==================
- 
+==================
+
+Deployment Object >> Same as Replicaset but with additional feature of image update. 
+Note : In replica set, once containers are deployed that image will remain in container, we can't update the image. 
+To achieve ferquent upgrades, Deployment is used. 
+
+========
+
+KIND:     Deployment
+VERSION:  apps/v1
+
+DESCRIPTION:
+     Deployment enables declarative updates for Pods and ReplicaSets.
+
+FIELDS:
+   apiVersion   <string>
+     APIVersion defines the versioned schema of this representation of an
+     object. Servers should convert recognized schemas to the latest internal
+     value, and may reject unrecognized values. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+   kind <string>
+     Kind is a string value representing the REST resource this object
+     represents. Servers may infer this from the endpoint the client submits
+     requests to. Cannot be updated. In CamelCase. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+
+   metadata     <Object>
+     Standard object metadata.
+
+   spec <Object>
+     Specification of the desired behavior of the Deployment.
+
+   status       <Object>
+     Most recently observed status of the Deployment.
+
+===============
+Template: 
+===============
+
+apiVersion:
+kind:
+metadata:
+spec:
+ replicas:
+ minReadySeconds: 
+ strategy:
+  type: RollingUpdate
+  rollingUpdate:
+   maxUnavailable:
+   maxSurge:
+ selector:
+  matchLabels:
+   type:
+ template:
+  metadata:
+  spec:
   
+  =================
+  Example:
+  =================
+  
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+   name: mydeployment
+  spec:
+   replicas: 3
+   minReadySeconds: 10
+   strategy:
+    type: RollingUpdate
+    rollingUpdate:
+     maxUnavailable: 1
+     maxSurge: 1
+   selector:
+    matchLabels:
+     type: webservers
+    template:
+     metadata:
+      name: mywebpod
+      labels:
+       author: mohit
+       type: webservers
+     spec:
+      containers:
+       - name: c1
+         image: leaddevops/kubeserve:v1
+         
+---
+
+  
+  
+  
+
+
 
 
 
