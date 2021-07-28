@@ -449,9 +449,47 @@ spec:
          
 ---
 
+Command to scale up or down the deployment: 
+==================
+syntax: 
+kubectl scale deployment <<name of deployment object>> --replicas=<<count needed>>
+
+kubectl scale deploy mydeployment --replicas=2 
   
-  
-  
+=========
+Since we have deployed containers via Deployment object, we can update image
+======
+Syntax:
+kubectl set image deployment << name of deployment object>> <<container_name>>=<<image>>
+
+kubectl set image deployment mydeployment c1=leaddevops/kubeserve:v2
+
+==========
+ To check rollout history
+ =======
+ synatx:
+ kubectl rollout history deployment << name of deplopyment object >>
+ 
+ kubectl rollout history deployment mydeployment
+ 
+ ============
+ Incase we have issue with new version we can roleback to last version or desired
+ ============
+ syntax:
+ kubectl rollout undo deployment << name of deployment object >>
+ 
+ 
+ kubectl rollout undo deploy mydeployment 
+ 
+ -----
+ for specific version
+ -----
+ syn
+ 
+ 
+ to remove all kubectl objects >>> kubectl delete all --all
+ 
+ 
 
 
 
