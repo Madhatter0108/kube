@@ -1,0 +1,74 @@
+=KUBERNETES: 
+
+
+ARCHITECURE:
+
+Consists of below mentioned components.
+
+1. API SERVER.
+2. SCHEDULER.
+3. KUBELET.
+4. ETCD.
+5. 
+
+
+Kubelet will take
+
+
+
+
+==============
+Installation
+--------------
+1. Hard Way. (Manual installtion of all components like kubectl, kubelet, api server, scheduler etc)
+2. Kubeadm ( utility). We download utility in kube master and cluster node, run it. it will install component kubectl, kubelet, api server etc 
+3. Cloud prvoider. Pre-build kube cluster available in cloud providers like aws(EKS) and google cloud(GKE).
+
+===============
+Installation of Kube cluster with kubeadm utility
+
+Step 1: Done on both Master and Node
+
+Install Docker on all nodes, containerization tool used in this kube cluster.
+
+Download kubeadm on all >>>
+
+
+Step 2: 
+
+
+Step3: Done on kube cluster. 
+
+run token on kube node. 
+
+================
+
+In kubernetes we will not create container directly, we will create a pod. On top of pod we will create replicaset, service 
+Pod will take image from containerization tool running and will create container inside it. 
+
+
+Layer of abstraction on top of container. 
+Container will not have ip address, while POD will have and it will be responsible of all communication. 
+
+================
+POD >> Smallest unit that can be deployed in kubernetes
+----------------
+
+basic command >> single command to create pod on kubernetes cluster. 
+
+kubectl run pod1 --image nginx
+
+kubectl get nodes               >>> TO GET KUBERNETES CLUSTER DETAILS. 
+kubectl get pod                 
+kubectl get pod -o wide
+kubectl describe pod pod1
+
+now we use manifest in companies 
+kubectl explain pod | less
+
+
+
+
+
+
+
