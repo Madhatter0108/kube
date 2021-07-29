@@ -565,6 +565,236 @@ spec:
    containers:
     - name: d
       image: nginx
+      
+ 
+ ===============
+ Persistent Volume and Pesistent Volume Claim: PV are used to save data from pod on host machines
+ 
+ Different types of volume available in kubernetes.
+ 
+ Storage admins: Provisioning the storage and confgiruation. 
+ 
+ Under pod spec we need to mention.
+ 
+Volume will be associated with Volume claim.
+
+Step1: Pool of storage resource ie, PV
+Step2: Persistent volume needs to be claimed. ie, PVC 
+Step3: Will declare the PVC in pod spec.
+
+
+yaml file >> 
+
+PVC 
+---
+Storage type and access details needs to be provided.
+
+2 type of PVC claim
+--------
+1, Standard
+2, Dyamnic 
+
+1. Standard, once PVC is created. It will get desired storage capacity PV will be linked.
+2. Dynamic, once PVC is created. It will dyamic mapping.
+
+
+KIND:     PersistentVolumeVERSION:  v1
+DESCRIPTION:
+     PersistentVolume (PV) is a storage resource provisioned by an
+     administrator. It is analogous to a node. More info:
+     https://kubernetes.io/docs/concepts/storage/persistent-volumes
+
+FIELDS:
+   apiVersion   <string>
+     APIVersion defines the versioned schema of this representation of an
+     object. Servers should convert recognized schemas to the latest internal
+     value, and may reject unrecognized values. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+   kind <string>
+     Kind is a string value representing the REST resource this object
+     represents. Servers may infer this from the endpoint the client submits
+     requests to. Cannot be updated. In CamelCase. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+
+   metadata     <Object>
+     Standard object's metadata. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+
+   spec <Object>
+     Spec defines a specification of a persistent volume owned by the cluster.
+     Provisioned by an administrator. More info:
+     https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistent-volumes
+
+   status       <Object>
+     Status represents the current information/status for the persistent volume.
+     Populated by the system. Read-only. More info:
+     https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistent-volumes
+     
+  KIND:     PersistentVolumeClaimVERSION:  v1
+
+DESCRIPTION:
+     PersistentVolumeClaim is a user's request for and claim to a persistent
+     volume
+
+FIELDS:
+   apiVersion   <string>
+     APIVersion defines the versioned schema of this representation of an
+     object. Servers should convert recognized schemas to the latest internal
+     value, and may reject unrecognized values. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+   kind <string>
+     Kind is a string value representing the REST resource this object
+     represents. Servers may infer this from the endpoint the client submits
+     requests to. Cannot be updated. In CamelCase. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+
+   metadata     <Object>
+     Standard object's metadata. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+
+   spec <Object>
+     Spec defines the desired characteristics of a volume requested by a pod
+     author. More info:
+     https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
+
+   status       <Object>
+     Status represents the current information/status of a persistent volume
+     claim. Read-only. More info:
+     https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
+
+
+--------------------
+Template:
+====================
+
+Persistent Volume : PV
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name:
+spec:
+ StorageClassName: {manual/none}
+ capacity:
+  storage:
+ accessModes:
+  - 
+ hostpath:  >>> Type of Storage
+  path: 
+
+
+====================
+Persistent Volume Claim: PVC
+
+apiVersion: v1
+kind: PersitentVolumeClaim
+metadata:
+ name:
+spec:
+ storageClassName: {manual/none}
+ accessModes:
+  - 
+ resources:
+  requests:
+   storage: 
+=============
+Example: PV and PVC
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: madhatterpv
+spec:
+ storageClassName: manual
+ capacity:
+  storage: 1Gi
+ accessModes:
+  - ReadWriteOnce
+ hostPath:
+  path: /tmp/madhatter
+  
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: Madhatterpvc
+spec:
+ storageClassName: manual
+ accessModes:
+  - ReadWriteOnce
+ resources:
+  requests:
+   storage: 1Gi
+ 
+ 
+ ============
+ 
+ kubectl get pv >>> This command will give Persitent volume details. 
+ 
+ kubectl get pvc >> this command will give Persistent Volume claim done. 
+ 
+ ==============
+Dynamic PVC claim: In this we don't need to do creation of PV automatically it will be assigned. 
+
+
+Template
+=======
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name:
+spec:
+ accessModes:
+  - 
+ resources:
+  requests:
+   storage:
+   
+------------
+Example:
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: dyamicpvc
+spec:
+ accessModes:
+  - ReadWriteOnce
+ resources:
+  requests:
+   storage: 1Gi
+   
+
+================
+
+Creating a Pod with existing PVC
+-------------
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: mypod
+spec:
+ containers:
+  - name: c1
+    image: nginx
+    volumeMounts:
+     - mountPath: "/containerdata"
+       name: myvolume
+  volumes:
+   - name: myvolume
+     PersistentVolumeClaim:
+      claimName: madhatterpvc
+      
+      
+   
+   
+
+
+ 
+ 
    
 
 
