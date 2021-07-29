@@ -787,7 +787,47 @@ spec:
    - name: myvolume
      PersistentVolumeClaim:
       claimName: madhatterpvc
-      
+
+============
+ Stateful objects: 
+ 
+ When we want data/network/name for our pod consistent we will use stateful objects. Since we virtue, Kubernetes will create new pod incase existing pod is deleted to maintain the desire count for the replicas.But in that process existing PVC for the pod will not be available in newly deployed pod in kubecluster. Also node name will be different. In intralinked application we don't want different pod name whenever new is created. So we use sticky name
+ 
+ 
+ KIND:     StatefulSet
+VERSION:  apps/v1
+
+DESCRIPTION:
+     StatefulSet represents a set of pods with consistent identities. Identities
+     are defined as:
+     - Network: A single stable DNS and hostname.
+     - Storage: As many VolumeClaims as requested. The StatefulSet guarantees
+     that a given network identity will always map to the same storage identity.
+
+FIELDS:
+   apiVersion   <string>
+     APIVersion defines the versioned schema of this representation of an
+     object. Servers should convert recognized schemas to the latest internal
+     value, and may reject unrecognized values. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+   kind <string>
+     Kind is a string value representing the REST resource this object
+     represents. Servers may infer this from the endpoint the client submits
+     requests to. Cannot be updated. In CamelCase. More info:
+     https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+
+   metadata     <Object>
+
+   spec <Object>
+     Spec defines the desired identities of pods in this set.
+
+   status       <Object>
+     Status is the current status of Pods in this StatefulSet. This data may be
+     out of date by some window of time.
+
+
+
       
    
    
